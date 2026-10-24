@@ -1,0 +1,20 @@
+# Neon CLI local context and pulled secrets
+.neon
+.env.local
+
+# Environment files with secrets (examples are committed)
+.env
+.env.*
+!.env.example
+
+# Dependencies and build output
+node_modules/
+dist/
+coverage/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+*.log

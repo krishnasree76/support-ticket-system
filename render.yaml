@@ -1,0 +1,23 @@
+# Render Blueprint for the Express API. Secrets use `sync: false`, so Render
+# asks for their values in the dashboard; they are never stored in git.
+services:
+  - type: web
+    name: support-ticket-api
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm ci
+    # Applies any pending migrations (idempotent, never destructive), then starts.
+    startCommand: npm run migrate && npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "20"
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_URL_UNPOOLED
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false
