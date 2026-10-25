@@ -25,7 +25,7 @@ A full-stack internal tool for a support team to create, triage, assign and reso
 10. [API reference](#10-api-reference)
 11. [Status-transition rules](#11-status-transition-rules)
 12. [Analytics date-range behaviour](#12-analytics-date-range-behaviour)
-13. [Running tests](#13-running-tests)
+13. [Testing](#13-testing)
 14. [Deployment](#14-deployment)
 15. [AI-assisted development disclosure](#15-ai-assisted-development-disclosure)
 16. [Known limitations and assumptions](#16-known-limitations-and-assumptions)
@@ -341,15 +341,39 @@ Response:
 
 KPI definitions: **Open** = status `Open`; **Resolved** = status `Resolved` (closed tickets are counted separately); **Critical** = priority `Critical`, any status.
 
-## 13. Running tests
+## 13. Testing
+
+The backend automated test suite uses **Jest** and **Supertest** to validate API behavior.
+
+### Test coverage
+
+The test suite covers:
+
+- **Ticket management:** Creating and retrieving tickets, including validation and error cases.
+- **Status transitions:** Valid and invalid status changes.
+- **Filtering and pagination:** Listing tickets with query parameters.
+- **Analytics:** API responses for ticket analytics.
+
+### Running the tests
+
+From the backend directory, run:
 
 ```bash
-npm test          # from the repo root (or `npm test` inside backend/)
+npm test
 ```
 
-- Jest sets `NODE_ENV=test`. In that mode, `config/env.js` **only** uses `TEST_DATABASE_URL`, and refuses to start if it is missing or equal to `DATABASE_URL`.
-- `tests/globalSetup.js` migrates the test database. Each suite truncates the tables before it runs.
-- 44 tests in 4 suites cover: creating valid tickets; rejecting missing fields, blank titles, invalid priority/status, unknown assignees and client-supplied timestamps; 404s and malformed IDs; edit, reassign and unassign with timeline events; delete with cascade; valid and invalid transitions (including Closed being final); invalid transitions leaving the ticket and history untouched; no history for same-status requests; transaction rollback when the history insert fails; combined filters, search, assignee/unassigned filters, pagination counts, severity sorting, LIKE-wildcard escaping and query validation; analytics KPIs, empty datasets, inclusive end dates, time-zone handling, open-ended ranges and invalid ranges.
+Ensure `TEST_DATABASE_URL` in your backend environment configuration points to the isolated test database before running the suite. The tests modify and clear test data, so do not point this variable at the production database.
+
+### Latest test result
+
+The latest local test run completed successfully:
+
+- Test suites passed: **4 of 4**
+- Tests passed: **44 of 44**
+- Snapshots: **0**
+- Result: **All tests passed**
+
+This result reflects the test run performed during development. Run the suite again after making backend changes to verify that the tests still pass.
 
 ## 14. Deployment
 
