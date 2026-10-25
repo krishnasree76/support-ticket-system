@@ -377,7 +377,7 @@ npm test          # from the repo root (or `npm test` inside backend/)
 
 Render's free tier sleeps when idle, so the first request after a while can take around 30–60 s.
 
-## AI-Assisted Development Disclosure
+## 15.AI-Assisted Development Disclosure
 
 I developed this Support Ticket Management & Analytics System with assistance from AI coding tools, including **Claude (Claude Code in VS Code)** and **ChatGPT**.
 
