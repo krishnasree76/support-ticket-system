@@ -62,7 +62,7 @@ A full-stack internal tool for a support team to create, triage, assign and reso
 - Fixed sidebar on desktop, slide-in drawer on mobile, sticky header with global search and a **Create ticket** button.
 - Skeleton loaders, empty states, error states with retry, success and error toasts, and confirmation dialogs.
 - Buttons are disabled while their request is pending, so a double-click cannot submit twice.
-- Accessibility: labelled inputs, `aria-sort` on sortable columns, focus-trapped dialogs that close on Escape, visible focus rings, a skip link, `aria-live` toasts, and WCAG AA badge contrast.
+- Accessibility: Labelled inputs, sortable-column indicators, focus-trapped dialogs that close on Escape, visible focus rings, a skip link, and live-region notifications.
 
 ## 2. Technology stack
 
@@ -115,7 +115,7 @@ On the frontend, `AppDataContext` holds a `dataVersion` counter. Every successfu
 | `ticket_activity` | Timeline events (`created`, `updated`, `assigned`, `status_changed`) with JSONB details | `ticket_id → tickets ON DELETE CASCADE` |
 | `schema_migrations` | Applied migration files | primary key on filename |
 
-Indexes cover status, priority, category, assignee, `(created_at, id)` and `(updated_at, id)`. Trigram GIN indexes on title and description speed up `ILIKE '%term%'` search.
+Indexes cover status, priority, category, assignee, (created_at, id) and (updated_at, id). Trigram GIN indexes are defined for title and description to support substring searches using ILIKE '%term%'. Actual performance depends on the query and dataset size.
 
 **Foreign-key policy:** deleting a ticket removes its history and activity (cascade), so no orphaned rows remain. Deleting an employee unassigns their tickets instead of deleting them.
 
@@ -436,7 +436,7 @@ AI assistance accelerated development, but I remain responsible for the submitte
 - Dashboard charts summarise by creation date only. There is no resolution-time or SLA analytics.
 - Two users can edit the same ticket; the last write wins for plain fields. Status changes are protected by row locks and the transition rules.
 - Render's free plan has cold starts, and the Neon compute scales to zero (first query after idle is slower).
-- There are no frontend unit tests. UI behaviour was verified with a scripted headless-browser run against the local stack.
+- There are no frontend unit tests. Backend behavior is covered by the Jest and Supertest suite; frontend behavior has been checked manually during development where applicable.
 
 ## Submission
 
