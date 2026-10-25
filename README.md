@@ -445,4 +445,4 @@ AI assistance accelerated development, but I am responsible for the submitted co
 
 - GitHub repository: https://github.com/krishnasree76/support-ticket-system
 - Live application: https://support-ticket-system-sooty.vercel.app/ · API: https://support-ticket-api-cxf3.onrender.com/
-- Explanation video (Google Drive, viewable by link): _add URL_
+- Explanation video (Google Drive, viewable by link): https://drive.google.com/file/d/1CAi4o3LGdh5Js2v_mYOIsCMQfBUd0mGK/view?usp=sharing
