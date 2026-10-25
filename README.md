@@ -198,8 +198,8 @@ In development the frontend needs no `.env`: Vite proxies `/api` to `http://loca
 | `PORT` | no | `5000` | Render sets this automatically |
 | `DATABASE_URL` | yes | `postgresql://USER:PASSWORD@ep-xxx-pooler.REGION.aws.neon.tech/neondb?sslmode=require` | **Pooled** Neon URL used by the app |
 | `DATABASE_URL_UNPOOLED` | recommended | `postgresql://USER:PASSWORD@ep-xxx.REGION.aws.neon.tech/neondb?sslmode=require` | **Direct** URL used by migrations and seeding |
-| `CORS_ORIGIN` | yes | `http://localhost:5173,https://your-app.vercel.app` | Comma-separated list of allowed origins, no trailing slash |
-| `TEST_DATABASE_URL` | for tests | separate test branch URL | Must differ from `DATABASE_URL`; tests truncate it |
+| `CORS_ORIGIN` | no | `http://localhost:5173,https://your-app.vercel.app` | Comma-separated allowed browser origins; defaults to `http://localhost:5173` if unset. Configure the deployed frontend origin in production. |
+| `TEST_DATABASE_URL` | for tests | separate test branch URL | Use a dedicated test database. The configuration rejects a missing URL or one exactly equal to `DATABASE_URL`. Verify that it points to the isolated test branch; tests modify test data. |
 | `DB_POOL_MAX` | no | `10` | pg pool size |
 
 ### Frontend (`frontend/.env`, Vercel dashboard in production)
@@ -242,10 +242,10 @@ neon connection-string test           # → TEST_DATABASE_URL
 
 - `npm run migrate` applies every `backend/migrations/*.sql` file not yet listed in `schema_migrations`. Each file runs in its own transaction, and an advisory lock prevents two deploys from migrating at once. Running it repeatedly is safe. It never drops anything.
 - To change the schema, add a new file (e.g. `002_add_due_date.sql`); applied files must not be edited.
-- `npm run seed` is **non-destructive**. It never deletes, truncates or updates rows:
-  - It inserts 8 demo assignees with `ON CONFLICT (email) DO NOTHING`.
-  - It inserts 30 demo tickets, with realistic status history and timeline events, **only if the tickets table is empty**.
-  - It refuses to run with `NODE_ENV=production` unless you pass `npm run seed -- --allow-production`.
+- `npm run seed` is designed to preserve existing data. It does not delete or truncate existing rows.
+  - It inserts 8 demo assignees using `ON CONFLICT (email) DO NOTHING`.
+  - It inserts 30 demo tickets, along with status history and activity events, only if the tickets table is empty. The script updates the status of the demo tickets it has just inserted to establish their final statuses.
+  - It refuses to run when `NODE_ENV=production` unless `--allow-production` is supplied.
 
 ## 10. API reference
 
