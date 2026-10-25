@@ -377,16 +377,30 @@ npm test          # from the repo root (or `npm test` inside backend/)
 
 Render's free tier sleeps when idle, so the first request after a while can take around 30–60 s.
 
-## 15. AI-assisted development disclosure
+## AI-Assisted Development Disclosure
 
-> **Template. Edit to reflect your own process before submitting.**
->
-> This project was built with AI assistance (Anthropic Claude, via Claude Code in VS Code). The AI was used to:
-> - scaffold the backend (Express routes, Zod validators, services, SQL migration) and the React frontend;
-> - write the Jest/Supertest test suite and an end-to-end browser check;
-> - draft this README.
->
-> I directed the requirements and architecture decisions (Neon branching for isolation, transaction design for status history, URL-based filter state), reviewed the generated code, ran the tests, builds and end-to-end checks myself, and verified the behaviour in the browser. I can explain every part of the codebase. Decisions and fixes made during review: [list your own here].
+I developed this Support Ticket Management & Analytics System with assistance from AI coding tools, including **Claude (Claude Code in VS Code)** and **ChatGPT**.
+
+### How I used AI tools
+
+I used AI assistance to accelerate development and help me work through unfamiliar implementation details. The tools supported me with:
+
+- **Backend development:** Scaffolding and refining Express routes, request validation with Zod, database queries, service logic, and database migrations.
+- **Frontend development:** Building React components, integrating the frontend with the REST API, and implementing ticket management, filters, analytics, and activity history.
+- **Testing and debugging:** Helping create backend tests with Jest and Supertest, interpret errors, and troubleshoot implementation and deployment issues.
+
+### My contribution and validation
+
+I directed the project requirements, worked through the implementation and integration process, configured the database and deployment, and investigated and resolved development issues. I reviewed the generated code and tested the application through the available validation steps rather than relying on generated code alone.
+
+My validation included:
+
+- Successfully deploying the backend API and checking its health endpoint.
+- Connecting the deployed React frontend to the backend API.
+- Verifying the production database schema and application data.
+- Running the backend automated test suite locally against the configured test database: **4 test suites passed, with 44 tests passing**.
+
+AI assistance accelerated development, but I remain responsible for the submitted code and its behavior. I have reviewed and learnt the implementation so I can explain the architecture, API design, database relationships, status-transition rules, analytics, and testing decisions in detail.
 
 ## 16. Known limitations and assumptions
 
