@@ -403,5 +403,5 @@ Render's free tier sleeps when idle, so the first request after a while can take
 ## Submission
 
 - GitHub repository: https://github.com/krishnasree76/support-ticket-system
-- Live application: _add Vercel URL_ · API: _add Render URL_
+- Live application: https://support-ticket-system-sooty.vercel.app/ · API: https://support-ticket-api-cxf3.onrender.com/
 - Explanation video (Google Drive, viewable by link): _add URL_
