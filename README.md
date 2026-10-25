@@ -226,7 +226,7 @@ Three branches keep the data isolated:
 |---|---|---|
 | `production` | Deployed API (Render) | Real or demo data. Never touched by tests. |
 | `dev` | Local `npm run dev` | Seeded demo data |
-| `test` | `npm test` only | Truncated and re-filled by each test file |
+| `test` | `npm test` only | Isolated test data, cleared as part of test setup. Never use the production database for tests. |
 
 ```bash
 neon branches create --name dev  --parent production
@@ -252,11 +252,14 @@ neon connection-string test           # → TEST_DATABASE_URL
 Base URL: `http://localhost:5000/api` locally.
 
 **Response shapes**
-- Single resource: `{ "data": { … } }`
-- List: `{ "data": [ … ], "pagination": { "page": 1, "limit": 10, "total": 42, "totalPages": 5 } }`
-- Error, for every 4xx/5xx: `{ "error": { "code": "VALIDATION_ERROR", "message": "Title is required", "details": [ { "field": "title", "message": "Title is required" } ] } }`
 
-Error codes: `VALIDATION_ERROR` (400), `INVALID_STATUS_TRANSITION` (400), `INVALID_JSON` (400), `NOT_FOUND` (404), `INTERNAL_SERVER_ERROR` (500). In production, 500 responses never include stack traces, SQL or connection details.
+- Single resource: `{ "data": { ... } }`
+- List: `{ "data": [ ... ], "pagination": { "page": 1, "limit": 10, "total": 42, "totalPages": 5 } }`
+- Error: `{ "error": { "code": "ERROR_CODE", "message": "Error message", "details": ... } }`
+
+The `details` field depends on the error type. Validation errors provide field-level details, while invalid status transitions provide the current status, requested status, and allowed transitions. Some errors may omit additional details.
+
+Error codes include `VALIDATION_ERROR` (400), `INVALID_STATUS_TRANSITION` (400), `INVALID_JSON` (400), `NOT_FOUND` (404), and `INTERNAL_SERVER_ERROR` (500). In production, 500 responses do not expose stack traces, SQL, or connection details.
 
 **Ticket object**
 ```json
@@ -424,7 +427,7 @@ My validation included:
 - Verifying the production database schema and application data.
 - Running the backend automated test suite locally against the configured test database: **4 test suites passed, with 44 tests passing**.
 
-AI assistance accelerated development, but I remain responsible for the submitted code and its behavior. I have reviewed and learnt the implementation so I can explain the architecture, API design, database relationships, status-transition rules, analytics, and testing decisions in detail.
+AI assistance accelerated development, but I am responsible for the submitted code and its behavior. I have reviewed the implementation and validated key parts of the application. I will continue studying the code in depth so I can confidently explain the architecture, API design, database relationships, status-transition rules, analytics, and testing decisions.
 
 ## 16. Known limitations and assumptions
 
